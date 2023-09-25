@@ -19,6 +19,8 @@ class MyApp extends StatelessWidget {
           primaryColor: LightColor.primaryColor,
           fontFamily: 'Montserrat',
           useMaterial3: true,
+          textSelectionTheme: const TextSelectionThemeData(
+              cursorColor: LightColor.primaryColor),
           inputDecorationTheme: InputDecorationTheme(
               prefixIconColor: LightColor.primaryColor,
               //     MaterialStateColor.resolveWith((Set<MaterialState> states) {
@@ -51,7 +53,7 @@ class MyApp extends StatelessWidget {
                     BorderRadius.circular(AppConstants.primaryBorderRadius),
                 borderSide: const BorderSide(color: AppColors.errorColor),
               ),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16)),
+              contentPadding: const EdgeInsets.all(16)),
           colorScheme: ColorScheme.fromSwatch().copyWith(
               primary: LightColor.primaryColor,
               secondary: LightColor.secondaryColor,
@@ -93,7 +95,17 @@ class MyApp extends StatelessWidget {
               titleLarge: TextStyle(
                   color: LightColor.primaryText,
                   fontSize: 16,
-                  fontWeight: FontWeight.w500))),
+                  fontWeight: FontWeight.w500)),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: LightColor.primaryColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              textStyle:
+                  const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+          )),
       home: const LoginScreen(),
     );
   }
