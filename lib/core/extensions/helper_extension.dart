@@ -10,4 +10,7 @@ extension HelperExtension on BuildContext {
 
   //primary color extension getter
   Color get primaryColor => Theme.of(this).primaryColor;
+
+  //texttheme
+  TextTheme get textTheme => Theme.of(this).textTheme;
 }

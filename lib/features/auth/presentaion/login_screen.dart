@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hiking_nepal/core/constants/app_media.dart';
+import 'package:hiking_nepal/core/extensions/helper_extension.dart';
 import 'package:hiking_nepal/core/theme/app_colors.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -26,7 +27,7 @@ class LoginScreen extends StatelessWidget {
               Expanded(
                   child: Container(
                 decoration: const BoxDecoration(
-                    color: AppColors.whiteColor,
+                    color: LightColor.whiteSmoke,
                     borderRadius: BorderRadiusDirectional.only(
                         topStart: Radius.circular(20),
                         topEnd: Radius.circular(20))),
@@ -35,11 +36,20 @@ class LoginScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text("Sign In"),
+                    Text(
+                      "Sign in",
+                      style: context.textTheme.headlineSmall!
+                          .copyWith(fontSize: 30),
+                    ),
                     const SizedBox(
                       height: 16,
                     ),
-                    TextFormField()
+                    TextFormField(
+                      style: context.textTheme.titleMedium,
+                      decoration: const InputDecoration(
+                          label: Text("Email"),
+                          prefixIcon: Icon(Icons.email_outlined)),
+                    )
                   ],
                 ),
               ))

@@ -20,15 +20,26 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Montserrat',
           useMaterial3: true,
           inputDecorationTheme: InputDecorationTheme(
+              prefixIconColor: LightColor.primaryColor,
+              //     MaterialStateColor.resolveWith((Set<MaterialState> states) {
+              //   if (states.contains(MaterialState.focused)) {
+              //     return Colors.grey;
+              //   }
+
+              //   return LightColor.secondaryColor;
+              // }),
+              labelStyle: const TextStyle(
+                  color: LightColor.secondaryColor,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500),
               border: OutlineInputBorder(
                   borderRadius:
                       BorderRadius.circular(AppConstants.primaryBorderRadius),
-                  borderSide:
-                      const BorderSide(color: LightColor.secondaryColor)),
+                  borderSide: const BorderSide(color: LightColor.primaryColor)),
               enabledBorder: OutlineInputBorder(
                 borderRadius:
                     BorderRadius.circular(AppConstants.primaryBorderRadius),
-                borderSide: const BorderSide(color: LightColor.secondaryColor),
+                borderSide: const BorderSide(color: LightColor.primaryColor),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius:
@@ -40,7 +51,49 @@ class MyApp extends StatelessWidget {
                     BorderRadius.circular(AppConstants.primaryBorderRadius),
                 borderSide: const BorderSide(color: AppColors.errorColor),
               ),
-              contentPadding: const EdgeInsets.all(16))),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16)),
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+              primary: LightColor.primaryColor,
+              secondary: LightColor.secondaryColor,
+              brightness: Brightness.light,
+              onSecondary: LightColor.primaryText),
+          textTheme: const TextTheme(
+              headlineLarge: TextStyle(
+                  color: LightColor.primaryText,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700),
+              headlineMedium: TextStyle(
+                  color: LightColor.primaryText,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600),
+              headlineSmall: TextStyle(
+                  color: LightColor.primaryText,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400),
+              bodyLarge: TextStyle(
+                  color: LightColor.primaryText,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500),
+              bodyMedium: TextStyle(
+                  color: LightColor.primaryText,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
+              bodySmall: TextStyle(
+                  color: LightColor.primaryText,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500),
+              titleSmall: TextStyle(
+                  color: LightColor.primaryText,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500),
+              titleMedium: TextStyle(
+                  color: LightColor.primaryText,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500),
+              titleLarge: TextStyle(
+                  color: LightColor.primaryText,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500))),
       home: const LoginScreen(),
     );
   }
