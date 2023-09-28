@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "420432583236",
+    "project_id": "hiking-nepal",
+    "storage_bucket": "hiking-nepal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:420432583236:android:1188c7a60872a9928c7a11",
+        "android_client_info": {
+          "package_name": "com.example.hiking_nepal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAn9dRzEmYew3uZe2MQGZ4Ie-n6FRy6vzk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
