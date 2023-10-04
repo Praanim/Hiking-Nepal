@@ -1,10 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hiking_nepal/core/constants/app_constants.dart';
 import 'package:hiking_nepal/core/theme/app_colors.dart';
+import 'package:hiking_nepal/di/injection_container.dart';
+import 'package:hiking_nepal/features/auth/presentaion/cubit/auth_cubit.dart';
 
 import 'features/auth/presentaion/login_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await intializeDependences();
   runApp(const MyApp());
 }
 
@@ -106,7 +113,10 @@ class MyApp extends StatelessWidget {
                   const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
           )),
-      home: const LoginScreen(),
+      home: BlocProvider<AuthCubit>(
+        create: (context) => sl(),
+        child: const LoginScreen(),
+      ),
     );
   }
 }

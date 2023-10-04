@@ -15,7 +15,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   Future<void> sigIn({required UserEntity user}) async {
     try {
       await auth.signInWithEmailAndPassword(
-          email: user.email, password: user.password);
+          email: user.email!, password: user.password!);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw FirebaseAuthException(code: 'No user found for that email.');

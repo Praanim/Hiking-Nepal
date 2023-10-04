@@ -1,12 +1,38 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hiking_nepal/core/constants/app_media.dart';
 import 'package:hiking_nepal/core/extensions/helper_extension.dart';
 import 'package:hiking_nepal/core/theme/app_colors.dart';
+import 'package:hiking_nepal/features/auth/data/model/user_model.dart';
+import 'package:hiking_nepal/features/auth/presentaion/cubit/auth_cubit.dart';
 
 import '../../../core/utils/gap.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  late TextEditingController _emailController;
+  late TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +65,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   VerticalGap.xl,
                   TextFormField(
+                    controller: _emailController,
                     style: context.textTheme.titleMedium,
                     textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
@@ -47,6 +74,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   VerticalGap.l,
                   TextFormField(
+                    controller: _passwordController,
                     style: context.textTheme.titleMedium,
                     obscureText: true,
                     decoration: const InputDecoration(
@@ -56,8 +84,14 @@ class LoginScreen extends StatelessWidget {
                   VerticalGap.xxxl,
                   Center(
                     child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           //login the app
+                          await context.read<AuthCubit>().sigInUser(
+                              user: UserModel(
+                                  email: _emailController.text.trim(),
+                                  password: _passwordController.text.trim()));
+
+                          print(FirebaseAuth.instance.currentUser?.email);
                         },
                         child: const Text('Login')),
                   )
