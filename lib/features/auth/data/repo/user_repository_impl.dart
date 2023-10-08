@@ -22,4 +22,15 @@ class UserRepositoryImpl implements UserRepository {
       throw Exception(e.toString());
     }
   }
+
+  @override
+  Stream<User?> authStateChanges() {
+    try {
+      return userRemoteDataSource.authStateChanges();
+    } on FirebaseAuthException catch (e) {
+      throw FirebaseAuthException(code: e.code);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

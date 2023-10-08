@@ -27,4 +27,15 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
       throw Exception(e.toString());
     }
   }
+
+  @override
+  Stream<User?> authStateChanges() {
+    try {
+      return auth.authStateChanges();
+    } on FirebaseAuthException catch (e) {
+      throw FirebaseAuthException(code: e.code);
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }
