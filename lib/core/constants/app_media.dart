@@ -6,4 +6,7 @@ class AppMedia {
 
   //login image
   static const loginImage = '$imageBasePath/login.jpg';
+
+  //add post cover image
+  static const addPostCoverImage = '$imageBasePath/add_post_cover.jpg';
 }

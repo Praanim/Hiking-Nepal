@@ -25,6 +25,8 @@ class MyApp extends StatelessWidget {
         routerConfig: router,
         title: 'Hiking Nepal',
         theme: ThemeData(
+            appBarTheme: const AppBarTheme(
+                color: LightColor.secondaryColor, elevation: 0),
             scaffoldBackgroundColor: LightColor.primaryBackgroundColor,
             primaryColor: LightColor.primaryColor,
             fontFamily: 'Montserrat',

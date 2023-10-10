@@ -8,7 +8,7 @@ class LightColor {
   static const secondaryColor = Color.fromARGB(255, 12, 129, 21);
 
   //primary text color
-  static const primaryText = Colors.black;
+  static const primaryText = Colors.white;
 
   /// White Smoke
   static const Color whiteSmokeLight = Color(0xfff8f8f8);

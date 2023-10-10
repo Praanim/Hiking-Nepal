@@ -5,8 +5,9 @@ import 'package:hiking_nepal/di/injection_container.dart';
 import 'package:hiking_nepal/features/auth/domain/repository/user_repository.dart';
 import 'package:hiking_nepal/features/auth/presentaion/login_screen.dart';
 
-import 'package:hiking_nepal/features/home/presentation/home_page.dart';
+import 'package:hiking_nepal/features/home/presentation/bottom_navigation_page.dart';
 import 'package:hiking_nepal/features/home/presentation/home_screen.dart';
+import 'package:hiking_nepal/features/post/presentation/pages/add_post_page.dart';
 import 'package:hiking_nepal/features/profile/presentation/pages/profile_page.dart';
 
 final GlobalKey<NavigatorState> rootNavigator = GlobalKey();
@@ -48,6 +49,11 @@ final GoRouter router = GoRouter(
             path: '/profile',
             name: RouteConstants.profile,
             builder: (context, state) => const ProfilePage(),
+          ),
+          GoRoute(
+            path: '/add-post',
+            name: RouteConstants.addPost,
+            builder: (context, state) => const AddPostPage(),
           )
         ],
       )
