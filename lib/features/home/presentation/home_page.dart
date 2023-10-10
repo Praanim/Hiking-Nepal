@@ -1,37 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hiking_nepal/features/home/presentation/cubit/bottom_navigation/bottom_navigation_cubit.dart';
-import 'package:hiking_nepal/features/home/presentation/home_screen.dart';
+import 'package:go_router/go_router.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+import 'package:hiking_nepal/core/routes/route_constants.dart';
+import 'package:hiking_nepal/features/home/presentation/cubit/bottom_navigation/bottom_navigation_cubit.dart';
+
+class BottomNavigatorPage extends StatefulWidget {
+  final Widget child;
+  const BottomNavigatorPage({
+    Key? key,
+    required this.child,
+  }) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<BottomNavigatorPage> createState() => _BottomNavigatorPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _BottomNavigatorPageState extends State<BottomNavigatorPage> {
   final List<BottomNavigationBarItem> _bottomNavigationBarItems = [
     const BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: "Home"),
     const BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile")
   ];
 
-  Widget _navigatePage(int index) {
+  void _navigatePage(int index) {
     switch (index) {
       case 0:
-        return const HomeScreen();
+        context.goNamed(RouteConstants.home);
       case 1:
-        return const Scaffold(
-          body: Center(
-            child: Text("This is Profile page"),
-          ),
-        );
+        context.goNamed(RouteConstants.profile);
+
       default:
-        return const Scaffold(
-          body: Center(
-            child: Text("Something went wrong"),
-          ),
-        );
+        context.goNamed(RouteConstants.home);
     }
   }
 
@@ -43,11 +42,7 @@ class _HomePageState extends State<HomePage> {
       create: (_) => BottomNavigationCubit(),
       child: Builder(builder: (context) {
         return Scaffold(
-          body: BlocBuilder<BottomNavigationCubit, int>(
-            builder: (context, state) {
-              return _navigatePage(state);
-            },
-          ),
+          body: widget.child,
           bottomNavigationBar: ClipRRect(
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20.0),
@@ -58,6 +53,7 @@ class _HomePageState extends State<HomePage> {
               currentIndex: context.watch<BottomNavigationCubit>().state,
               onTap: (value) {
                 context.read<BottomNavigationCubit>().setIndex(value);
+                _navigatePage(context.read<BottomNavigationCubit>().state);
               },
             ),
           ),

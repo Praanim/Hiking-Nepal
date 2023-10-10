@@ -20,10 +20,10 @@ class LightColor {
   static const Color lightGrey = Color(0xffd2d2d2);
 
   ///primary background Color
-  static const Color primaryBackgroundColor = Color.fromARGB(255, 28, 31, 29);
+  static const Color primaryBackgroundColor = Color.fromARGB(255, 81, 94, 86);
 
   ///secondary background Color
-  static const Color secondaryBackgroundColor = Color.fromARGB(255, 20, 24, 21);
+  static const Color secondaryBackgroundColor = Color.fromARGB(255, 61, 68, 63);
 }
 
 class AppColors {
