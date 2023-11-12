@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hiking_nepal/core/routes/route_constants.dart';
 import 'package:hiking_nepal/di/injection_container.dart';
@@ -7,6 +8,7 @@ import 'package:hiking_nepal/features/auth/presentaion/login_screen.dart';
 
 import 'package:hiking_nepal/features/home/presentation/bottom_navigation_page.dart';
 import 'package:hiking_nepal/features/home/presentation/home_screen.dart';
+import 'package:hiking_nepal/features/post/presentation/cubit/add_post/add_post_cubit.dart';
 import 'package:hiking_nepal/features/post/presentation/pages/add_post_page.dart';
 import 'package:hiking_nepal/features/profile/presentation/pages/profile_page.dart';
 
@@ -53,7 +55,10 @@ final GoRouter router = GoRouter(
           GoRoute(
             path: '/add-post',
             name: RouteConstants.addPost,
-            builder: (context, state) => const AddPostPage(),
+            builder: (context, state) => BlocProvider(
+              create: (context) => AddPostCubit(),
+              child: const AddPostPage(),
+            ),
           )
         ],
       )

@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hiking_nepal/core/constants/app_constants.dart';
 import 'package:hiking_nepal/core/constants/app_media.dart';
 import 'package:hiking_nepal/core/extensions/helper_extension.dart';
 import 'package:hiking_nepal/core/services/date_parser_service.dart';
 import 'package:hiking_nepal/core/theme/app_colors.dart';
 import 'package:hiking_nepal/core/utils/gap.dart';
+import 'package:hiking_nepal/features/post/data/model/add_post_model.dart';
+import 'package:hiking_nepal/features/post/presentation/cubit/add_post/add_post_cubit.dart';
 import 'package:hiking_nepal/features/post/presentation/widgets/custom_tile.dart';
 
 class AddPostPage extends StatefulWidget {
@@ -25,6 +28,8 @@ class _AddPostPageState extends State<AddPostPage> {
 
   late DateTime _selectedDate;
   int? selectedTime;
+
+  final PostModel postModel = PostModel();
 
   @override
   void initState() {
@@ -125,26 +130,36 @@ class _AddPostPageState extends State<AddPostPage> {
                 VerticalGap.l,
 
                 ///category
-                CustomTile(
-                  iconData: Icons.category,
-                  title: "Category",
-                  suffix: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      alignment: AlignmentDirectional.centerEnd,
-                      icon: const SizedBox.shrink(),
-                      value: selectedCategory,
-                      dropdownColor: LightColor.whiteSmoke,
-                      items: _category
-                          .map((e) => DropdownMenuItem<String>(
-                              value: e, child: customPageText(e)))
-                          .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedCategory = value ?? selectedCategory;
-                        });
-                      },
-                    ),
-                  ),
+                BlocBuilder<AddPostCubit, AddPostState>(
+                  buildWhen: (previous, current) {
+                    if (current is AddPostIntermediateData) {
+                      return true;
+                    }
+                    return false;
+                  },
+                  builder: (context, state) {
+                    return CustomTile(
+                      iconData: Icons.category,
+                      title: "Category",
+                      suffix: DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          alignment: AlignmentDirectional.centerEnd,
+                          icon: const SizedBox.shrink(),
+                          value: selectedCategory,
+                          dropdownColor: LightColor.whiteSmoke,
+                          items: _category
+                              .map((e) => DropdownMenuItem<String>(
+                                  value: e, child: customPageText(e)))
+                              .toList(),
+                          onChanged: (value) {
+                            BlocProvider.of<AddPostCubit>(context)
+                                .editDataClass(
+                                    postModel.copyWith(category: value));
+                          },
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 VerticalGap.s,
 
