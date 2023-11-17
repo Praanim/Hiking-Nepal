@@ -28,8 +28,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
   int? selectedTime; //no of days reqd to complete the travel
 
-  final PostModel postModel = PostModel();
-
   @override
   void initState() {
     super.initState();
@@ -101,6 +99,8 @@ class _AddPostPageState extends State<AddPostPage> {
             ),
           ),
           VerticalGap.l,
+
+          //textform fields for name, description and costing of the travel
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppConstants.pad8),
             child: Column(
@@ -151,8 +151,7 @@ class _AddPostPageState extends State<AddPostPage> {
                               .toList(),
                           onChanged: (value) {
                             BlocProvider.of<AddPostCubit>(context)
-                                .editDataClass(
-                                    postModel.copyWith(category: value));
+                                .editDataClass(category: value);
                           },
                         ),
                       ),
@@ -186,9 +185,9 @@ class _AddPostPageState extends State<AddPostPage> {
                               if (value != null) {
                                 //updating the state
                                 BlocProvider.of<AddPostCubit>(context)
-                                    .editDataClass(postModel.copyWith(
+                                    .editDataClass(
                                         date: DateParserService.getDateOnly(
-                                            value)));
+                                            value));
                               }
                             });
                           },
@@ -213,37 +212,51 @@ class _AddPostPageState extends State<AddPostPage> {
                 VerticalGap.l,
 
                 //time (no of days to reach destination)
-                CustomTile(
-                    suffix: InkWell(
-                      onTap: () async {
-                        //select no of days reqd to reach destination
-                        showCupertinoModalPopup(
-                          context: context,
-                          builder: (_) => Container(
-                            color: LightColor.whiteSmoke,
-                            width: double.infinity,
-                            height: context.height * 0.25,
-                            child: CupertinoPicker(
-                              itemExtent: 50, // Height of each item
-                              onSelectedItemChanged: (int index) {
-                                selectedTime = index;
-                              },
-                              children: List<Widget>.generate(10, (index) {
-                                return Center(
-                                    child: customPageText(index.toString()));
-                              }),
-                            ),
-                          ),
-                        ).then((value) {
-                          setState(() {});
-                        });
-                      },
-                      child: customPageText(selectedTime != null
-                          ? '$selectedTime days'
-                          : 'Not Set'),
-                    ),
-                    title: 'Time (Days)',
-                    iconData: Icons.lock_clock)
+                BlocBuilder<AddPostCubit, AddPostState>(
+                  buildWhen: (previous, current) {
+                    if (current is AddPostIntermediateData) {
+                      return true;
+                    }
+                    return false;
+                  },
+                  builder: (context, state) {
+                    return CustomTile(
+                        suffix: InkWell(
+                          onTap: () async {
+                            //select no of days reqd to reach destination
+                            showCupertinoModalPopup(
+                              context: context,
+                              builder: (_) => Container(
+                                color: LightColor.whiteSmoke,
+                                width: double.infinity,
+                                height: context.height * 0.25,
+                                child: CupertinoPicker(
+                                  itemExtent: 50, // Height of each item
+                                  onSelectedItemChanged: (int index) {
+                                    selectedTime = index;
+                                    print(selectedTime);
+                                  },
+                                  children: List<Widget>.generate(10, (index) {
+                                    return Center(
+                                        child:
+                                            customPageText(index.toString()));
+                                  }),
+                                ),
+                              ),
+                            ).then((_) {
+                              //updating state
+                              BlocProvider.of<AddPostCubit>(context)
+                                  .editDataClass(time: selectedTime);
+                            });
+                          },
+                          child: customPageText(state.postModel?.time != null
+                              ? '${state.postModel!.time!} days'
+                              : 'Not Set'),
+                        ),
+                        title: 'Time (Days)',
+                        iconData: Icons.lock_clock);
+                  },
+                )
               ],
             ),
           )

@@ -7,19 +7,27 @@ part 'add_post_state.dart';
 class AddPostCubit extends Cubit<AddPostState> {
   AddPostCubit() : super(const AddPostInitial(postModel: null));
 
-  ///this is our state data class and we will manipulate this property always
-  final PostModel postModel = PostModel();
+  PostModel _postModel = PostModel();
 
-  void editDataClass(PostModel postModel) {
-    emit(AddPostIntermediateData(
-        postModel: postModel.copyWith(
-      name: postModel.name,
-      category: postModel.category,
-      cost: postModel.cost,
-      date: postModel.date,
-      description: postModel.description,
-      location: postModel.location,
-      time: postModel.time,
-    )));
+  void editDataClass(
+      {String? name,
+      String? category,
+      int? cost,
+      String? date,
+      String? description,
+      String? location,
+      int? time}) {
+    //editing the state class
+    _postModel = _postModel.copyWith(
+      name: name,
+      category: category,
+      cost: cost,
+      date: date,
+      description: description,
+      location: location,
+      time: time,
+    );
+    //emitting state
+    emit(AddPostIntermediateData(postModel: _postModel));
   }
 }
