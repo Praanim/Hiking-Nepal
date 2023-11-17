@@ -5,14 +5,14 @@ import 'package:hiking_nepal/features/post/data/model/add_post_model.dart';
 part 'add_post_state.dart';
 
 class AddPostCubit extends Cubit<AddPostState> {
-  AddPostCubit() : super(AddPostInitial());
+  AddPostCubit() : super(const AddPostInitial(postModel: null));
 
   ///this is our state data class and we will manipulate this property always
-  final PostModel _postModel = PostModel();
+  final PostModel postModel = PostModel();
 
   void editDataClass(PostModel postModel) {
     emit(AddPostIntermediateData(
-        postModel: _postModel.copyWith(
+        postModel: postModel.copyWith(
       name: postModel.name,
       category: postModel.category,
       cost: postModel.cost,

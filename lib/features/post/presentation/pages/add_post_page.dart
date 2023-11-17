@@ -23,11 +23,10 @@ class _AddPostPageState extends State<AddPostPage> {
   late TextEditingController _descriptionController;
   late TextEditingController _costController;
 
-  final List<String> _category = ['Hike', 'Trek', 'Ride/Drive'];
-  late String selectedCategory;
+  final List<String> _category = ['Not Set', 'Hike', 'Trek', 'Ride/Drive'];
+  late DateTime _currentDate;
 
-  late DateTime _selectedDate;
-  int? selectedTime;
+  int? selectedTime; //no of days reqd to complete the travel
 
   final PostModel postModel = PostModel();
 
@@ -38,8 +37,7 @@ class _AddPostPageState extends State<AddPostPage> {
     _nameController = TextEditingController();
     _descriptionController = TextEditingController();
     _costController = TextEditingController();
-    selectedCategory = _category[0];
-    _selectedDate = DateTime.now();
+    _currentDate = DateTime.now();
   }
 
   @override
@@ -145,7 +143,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         child: DropdownButton<String>(
                           alignment: AlignmentDirectional.centerEnd,
                           icon: const SizedBox.shrink(),
-                          value: selectedCategory,
+                          value: state.postModel?.category ?? _category[0],
                           dropdownColor: LightColor.whiteSmoke,
                           items: _category
                               .map((e) => DropdownMenuItem<String>(
@@ -164,22 +162,42 @@ class _AddPostPageState extends State<AddPostPage> {
                 VerticalGap.s,
 
                 ///date
-                CustomTile(
-                    title: "Date",
-                    iconData: Icons.calendar_today,
-                    suffix: InkWell(
-                      onTap: () {
-                        //show date picker dialog
-                        showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate:
-                                DateTime.now().add(const Duration(days: 365)));
-                      },
-                      child: customPageText(
-                          DateParserService.getDateOnly(_selectedDate)),
-                    )),
+                BlocBuilder<AddPostCubit, AddPostState>(
+                  buildWhen: (previous, current) {
+                    if (current is AddPostIntermediateData) {
+                      return true;
+                    }
+                    return false;
+                  },
+                  builder: (context, state) {
+                    return CustomTile(
+                        title: "Date",
+                        iconData: Icons.calendar_today,
+                        suffix: InkWell(
+                          onTap: () {
+                            //show date picker dialog
+                            showDatePicker(
+                                    context: context,
+                                    initialDate: _currentDate,
+                                    firstDate: _currentDate,
+                                    lastDate: _currentDate
+                                        .add(const Duration(days: 365)))
+                                .then((value) {
+                              if (value != null) {
+                                //updating the state
+                                BlocProvider.of<AddPostCubit>(context)
+                                    .editDataClass(postModel.copyWith(
+                                        date: DateParserService.getDateOnly(
+                                            value)));
+                              }
+                            });
+                          },
+                          child: customPageText(state.postModel?.date != null
+                              ? state.postModel!.date!
+                              : DateParserService.getDateOnly(_currentDate)),
+                        ));
+                  },
+                ),
                 VerticalGap.l,
 
                 //location
