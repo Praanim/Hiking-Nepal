@@ -6,6 +6,7 @@ import 'package:hiking_nepal/features/auth/data/repo/user_repository_impl.dart';
 import 'package:hiking_nepal/features/auth/domain/repository/user_remote_data_source.dart';
 import 'package:hiking_nepal/features/auth/domain/repository/user_repository.dart';
 import 'package:hiking_nepal/features/auth/presentaion/cubit/auth_cubit.dart';
+import 'package:image_picker/image_picker.dart';
 
 //get it instance
 final getIt = GetIt.instance;
@@ -23,6 +24,9 @@ Future<void> intializeDependences() async {
       UserRemoteDataSourceImpl(auth: getIt()));
   getIt.registerSingleton<UserRepository>(
       UserRepositoryImpl(userRemoteDataSource: getIt()));
+
+  //Image picker instance
+  getIt.registerSingleton<ImagePicker>(ImagePicker());
 
   //Blocs
   getIt.registerFactory<AuthCubit>(() => AuthCubit(userRepository: getIt()));

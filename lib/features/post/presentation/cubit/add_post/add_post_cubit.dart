@@ -7,6 +7,7 @@ part 'add_post_state.dart';
 class AddPostCubit extends Cubit<AddPostState> {
   AddPostCubit() : super(const AddPostInitial(postModel: null));
 
+//we will edit this class variable and it will work as recent state
   PostModel _postModel = PostModel();
 
   void editDataClass(

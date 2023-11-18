@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +9,7 @@ import 'package:hiking_nepal/core/extensions/helper_extension.dart';
 import 'package:hiking_nepal/core/services/date_parser_service.dart';
 import 'package:hiking_nepal/core/theme/app_colors.dart';
 import 'package:hiking_nepal/core/utils/gap.dart';
-import 'package:hiking_nepal/features/post/data/model/add_post_model.dart';
+import 'package:hiking_nepal/core/widgets/image_picker_widget.dart';
 import 'package:hiking_nepal/features/post/presentation/cubit/add_post/add_post_cubit.dart';
 import 'package:hiking_nepal/features/post/presentation/widgets/custom_tile.dart';
 
@@ -65,13 +67,20 @@ class _AddPostPageState extends State<AddPostPage> {
             width: context.width,
             child: Stack(
               children: [
-                Container(
-                  height: context.height * 0.25,
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      image: const DecorationImage(
-                          image: AssetImage(AppMedia.addPostCoverImage),
-                          fit: BoxFit.cover)),
+                BlocBuilder<ImagePickerWidget, String?>(
+                  builder: (context, state) {
+                    return Container(
+                      height: context.height * 0.25,
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).scaffoldBackgroundColor,
+                          image: DecorationImage(
+                              image: state == null
+                                  ? Image.asset(AppMedia.addPostCoverImage)
+                                      .image
+                                  : FileImage(File(state)),
+                              fit: BoxFit.cover)),
+                    );
+                  },
                 ),
                 Positioned(
                   bottom: 0,
@@ -84,7 +93,9 @@ class _AddPostPageState extends State<AddPostPage> {
                       radius: 40,
                       child: IconButton(
                         onPressed: () {
-                          ///add image
+                          ///add image from gallery
+                          BlocProvider.of<ImagePickerWidget>(context)
+                              .pickImageFromGallery();
                         },
                         icon: Icon(
                           Icons.camera_alt,
@@ -256,7 +267,17 @@ class _AddPostPageState extends State<AddPostPage> {
                         title: 'Time (Days)',
                         iconData: Icons.lock_clock);
                   },
-                )
+                ),
+                VerticalGap.xl,
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        padding: EdgeInsetsDirectional.symmetric(
+                            horizontal: context.width / 3)),
+                    onPressed: () {
+                      //submit the add post data to the db
+                    },
+                    child: const Text("Publish")),
               ],
             ),
           )
