@@ -1,35 +1,16 @@
-class PostModel {
-  ///name of the place
-  final String? name;
+import 'package:hiking_nepal/features/post/domain/entity/post_entity.dart';
 
-  ///description of the place
-  final String? description;
-
-  ///estimated cost for the travel
-  final int? cost;
-
-  ///category
-  final String? category;
-
-  ///date on which the user logged or travelled to the place
-  final String? date;
-
-  ///location
-  final String? location;
-
-  ///time (in days) required to reach the destination
-  final int? time;
-
+class PostModel extends PostEntity {
   ///constructor
-  PostModel({
-    this.name,
-    this.description,
-    this.cost,
-    this.category,
-    this.date,
-    this.location,
-    this.time,
-  });
+  const PostModel(
+      {super.name,
+      super.category,
+      super.description,
+      super.cost,
+      super.date,
+      super.location,
+      super.image,
+      super.time});
 
   ///changes the properties of existing data class.
   PostModel copyWith({
@@ -39,6 +20,7 @@ class PostModel {
     String? category,
     String? date,
     String? location,
+    String? image,
     int? time,
   }) {
     return PostModel(
@@ -48,6 +30,7 @@ class PostModel {
       category: category ?? this.category,
       date: date ?? this.date,
       location: location ?? this.location,
+      image: image ?? this.image,
       time: time ?? this.time,
     );
   }

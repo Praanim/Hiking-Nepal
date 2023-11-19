@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hiking_nepal/features/auth/data/remote_data_source/user_remote_data_source_impl.dart';
 import 'package:hiking_nepal/features/auth/data/repo/user_repository_impl.dart';
@@ -18,6 +19,9 @@ Future<void> intializeDependences() async {
 
   //Firebase Auth
   getIt.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);
+
+  //Firebase storage
+  getIt.registerSingleton<FirebaseStorage>(FirebaseStorage.instance);
 
   //Dependencies
   getIt.registerSingleton<UserRemoteDataSource>(

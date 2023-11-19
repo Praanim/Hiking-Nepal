@@ -8,6 +8,7 @@ import 'package:hiking_nepal/di/injection_container.dart';
 import 'package:hiking_nepal/features/auth/presentaion/cubit/auth_cubit.dart';
 
 void main() async {
+  //ensures that the firebase has been initialized
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await intializeDependences();
