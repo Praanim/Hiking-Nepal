@@ -13,7 +13,9 @@ final class AddPostInitial extends AddPostState {
 }
 
 final class AddPostSuccess extends AddPostState {
-  const AddPostSuccess({required super.postModel});
+  ///Sucess message
+  final String successMssg;
+  const AddPostSuccess({required this.successMssg}) : super(postModel: null);
 }
 
 final class AddPostFailure extends AddPostState {

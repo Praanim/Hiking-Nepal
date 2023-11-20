@@ -21,32 +21,36 @@ class AddPostCubit extends Cubit<AddPostState> {
   }) : super(const AddPostInitial(postModel: null));
 
   void editDataClass(
-      {String? name,
+      {String? uid,
+      String? name,
       String? category,
       int? cost,
       String? date,
       String? description,
       String? location,
-      int? time}) {
+      int? time,
+      String? author}) {
     //editing the state class
     _postModel = _postModel.copyWith(
-      name: name,
-      category: category,
-      cost: cost,
-      date: date,
-      description: description,
-      location: location,
-      time: time,
-    );
+        uid: uid,
+        name: name,
+        category: category,
+        cost: cost,
+        date: date,
+        description: description,
+        location: location,
+        time: time,
+        author: author);
     //emitting state
     emit(AddPostIntermediateData(postModel: _postModel));
   }
 
   void addPost(XFile xFile, String uid) async {
     try {
-      final result = await postRepository.uploadImage(xFile, uid);
-      print(result);
-      emit(AddPostSuccess(postModel: _postModel));
+      final downloadUrlPath = await postRepository.uploadImage(xFile, uid);
+      print(downloadUrlPath);
+      await postRepository.addPost(_postModel.copyWith(image: downloadUrlPath));
+      emit(const AddPostSuccess(successMssg: "Post Sucessfully added"));
     } on FirebaseException catch (e) {
       emit(AddPostFailure(message: e.message ?? e.code));
     } on Exception catch (e) {

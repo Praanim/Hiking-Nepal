@@ -14,6 +14,22 @@ class PostModel extends PostEntity {
       super.time,
       super.author});
 
+  ///Converts class properties into map for uploading data to db
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'name': name,
+      'description': description,
+      'cost': cost,
+      'category': category,
+      'date': date,
+      'location': location,
+      'time': time,
+      'image': image,
+      'author': author,
+    };
+  }
+
   ///changes the properties of existing data class.
   PostModel copyWith(
       {String? uid,

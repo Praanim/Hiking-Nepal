@@ -14,6 +14,7 @@ import 'package:hiking_nepal/core/widgets/image_picker_widget.dart';
 import 'package:hiking_nepal/features/post/presentation/cubit/add_post/add_post_cubit.dart';
 import 'package:hiking_nepal/features/post/presentation/widgets/custom_tile.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 class AddPostPage extends StatefulWidget {
   const AddPostPage({super.key});
@@ -286,12 +287,23 @@ class _AddPostPageState extends State<AddPostPage> {
 
                         final file =
                             BlocProvider.of<ImagePickerWidget>(context).state;
+                        final currentUid =
+                            FirebaseAuth.instance.currentUser!.uid;
 
                         if (file == null) {
                           print("Image path is null");
                         } else {
-                          BlocProvider.of<AddPostCubit>(context).addPost(
-                              file, FirebaseAuth.instance.currentUser!.uid);
+                          ///Updating the [PostModel] state class before uploading the doc
+                          BlocProvider.of<AddPostCubit>(context).editDataClass(
+                              uid: const Uuid().v4(),
+                              name: _nameController.text.trim(),
+                              description: _descriptionController.text.trim(),
+                              cost: int.parse(_costController.text.trim()),
+                              author: currentUid);
+
+                          ///Making the api call to db from here
+                          BlocProvider.of<AddPostCubit>(context)
+                              .addPost(file, currentUid);
                         }
                       },
                       child: const Text("Publish")),

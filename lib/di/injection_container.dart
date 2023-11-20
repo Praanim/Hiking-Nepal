@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -21,19 +22,19 @@ Future<void> intializeDependences() async {
   //Dio
   getIt.registerSingleton<Dio>(Dio());
 
-  //Firebase Auth
+  //Firebase
   getIt.registerSingleton<FirebaseAuth>(FirebaseAuth.instance);
-
-  //Firebase storage
   getIt.registerSingleton<FirebaseStorage>(FirebaseStorage.instance);
+  getIt.registerSingleton<FirebaseFirestore>(FirebaseFirestore.instance);
 
   //Dependencies
   getIt.registerSingleton<UserRemoteDataSource>(
       UserRemoteDataSourceImpl(auth: getIt()));
   getIt.registerSingleton<UserRepository>(
       UserRepositoryImpl(userRemoteDataSource: getIt()));
-  getIt.registerSingleton<PostRemoteDataSource>(
-      PostRemoteDataSourceImpl(firebaseStorage: getIt()));
+  getIt.registerSingleton<PostRemoteDataSource>(PostRemoteDataSourceImpl(
+      firebaseStorage: getIt<FirebaseStorage>(),
+      firebaseFirestore: getIt<FirebaseFirestore>()));
   getIt.registerSingleton<PostRepository>(
       PostRepositoryImpl(postRemoteDataSource: getIt()));
 
