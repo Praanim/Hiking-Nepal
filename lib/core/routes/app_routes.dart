@@ -59,7 +59,7 @@ final GoRouter router = GoRouter(
             builder: (context, state) => MultiBlocProvider(
               providers: [
                 BlocProvider(
-                  create: (context) => AddPostCubit(),
+                  create: (context) => AddPostCubit(postRepository: getIt()),
                 ),
                 BlocProvider(
                   create: (context) => ImagePickerWidget(imagePicker: getIt()),

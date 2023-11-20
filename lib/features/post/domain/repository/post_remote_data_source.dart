@@ -1,6 +1,6 @@
-import 'package:hiking_nepal/features/post/domain/entity/post_entity.dart';
+import 'package:image_picker/image_picker.dart';
 
 abstract class PostRemoteDataSource {
-  ///Uploads and retrieves string to the path of the uploaded image.
-  Future<String> uploadImage(PostEntity postEntity, String uid);
+  ///Uploads and retrieves [String] to the path of the uploaded image.
+  Future<String> uploadImage(XFile xfile, String uid);
 }

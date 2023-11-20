@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ImagePickerWidget extends Cubit<String?> {
+class ImagePickerWidget extends Cubit<XFile?> {
   ///image picker instance
   final ImagePicker imagePicker;
 
@@ -14,7 +14,7 @@ class ImagePickerWidget extends Cubit<String?> {
       if (xfile == null) {
         emit(null); //null case
       } else {
-        emit(xfile.path); //success case
+        emit(xfile); //success case
       }
     } catch (e) {
       print(e);

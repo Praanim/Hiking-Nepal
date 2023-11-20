@@ -1,14 +1,24 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:hiking_nepal/features/post/data/model/add_post_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:hiking_nepal/features/post/data/model/post_model.dart';
+import 'package:hiking_nepal/features/post/domain/repository/post_repository.dart';
+import 'package:image_picker/image_picker.dart';
 
 part 'add_post_state.dart';
 
 class AddPostCubit extends Cubit<AddPostState> {
-  AddPostCubit() : super(const AddPostInitial(postModel: null));
+  ///We will edit this instance variable and it will work as recent state
+  PostModel _postModel = const PostModel();
 
-//we will edit this class variable and it will work as recent state
-  PostModel _postModel = PostModel();
+  ///[PostRepository] instance variable
+  final PostRepository postRepository;
+
+  ///constructor
+  AddPostCubit({
+    required this.postRepository,
+  }) : super(const AddPostInitial(postModel: null));
 
   void editDataClass(
       {String? name,
@@ -30,5 +40,17 @@ class AddPostCubit extends Cubit<AddPostState> {
     );
     //emitting state
     emit(AddPostIntermediateData(postModel: _postModel));
+  }
+
+  void addPost(XFile xFile, String uid) async {
+    try {
+      final result = await postRepository.uploadImage(xFile, uid);
+      print(result);
+      emit(AddPostSuccess(postModel: _postModel));
+    } on FirebaseException catch (e) {
+      emit(AddPostFailure(message: e.message ?? e.code));
+    } on Exception catch (e) {
+      emit(AddPostFailure(message: e.toString()));
+    }
   }
 }

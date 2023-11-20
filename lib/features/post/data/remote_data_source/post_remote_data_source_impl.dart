@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:hiking_nepal/features/post/domain/entity/post_entity.dart';
 import 'package:hiking_nepal/features/post/domain/repository/post_remote_data_source.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PostRemoteDataSourceImpl extends PostRemoteDataSource {
   ///Firebase storage instance
@@ -14,13 +14,11 @@ class PostRemoteDataSourceImpl extends PostRemoteDataSource {
   });
 
   @override
-  Future<String> uploadImage(PostEntity postEntity, String uid) async {
+  Future<String> uploadImage(XFile xfile, String uid) async {
     try {
-      final storageRef = firebaseStorage
-          .ref()
-          .child('posts')
-          .child('$uid/${postEntity.name!}');
-      UploadTask uploadTask = storageRef.putFile(File(postEntity.image!));
+      final storageRef =
+          firebaseStorage.ref().child('posts').child('$uid/${xfile.name}');
+      UploadTask uploadTask = storageRef.putFile(File(xfile.path));
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
 
       String downloadUrl = await taskSnapshot.ref.getDownloadURL();

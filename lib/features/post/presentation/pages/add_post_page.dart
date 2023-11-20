@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +13,7 @@ import 'package:hiking_nepal/core/utils/gap.dart';
 import 'package:hiking_nepal/core/widgets/image_picker_widget.dart';
 import 'package:hiking_nepal/features/post/presentation/cubit/add_post/add_post_cubit.dart';
 import 'package:hiking_nepal/features/post/presentation/widgets/custom_tile.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddPostPage extends StatefulWidget {
   const AddPostPage({super.key});
@@ -67,7 +69,7 @@ class _AddPostPageState extends State<AddPostPage> {
             width: context.width,
             child: Stack(
               children: [
-                BlocBuilder<ImagePickerWidget, String?>(
+                BlocBuilder<ImagePickerWidget, XFile?>(
                   builder: (context, state) {
                     return Container(
                       height: context.height * 0.25,
@@ -77,7 +79,7 @@ class _AddPostPageState extends State<AddPostPage> {
                               image: state == null
                                   ? Image.asset(AppMedia.addPostCoverImage)
                                       .image
-                                  : FileImage(File(state)),
+                                  : FileImage(File(state.path)),
                               fit: BoxFit.cover)),
                     );
                   },
@@ -245,7 +247,6 @@ class _AddPostPageState extends State<AddPostPage> {
                                   itemExtent: 50, // Height of each item
                                   onSelectedItemChanged: (int index) {
                                     selectedTime = index;
-                                    print(selectedTime);
                                   },
                                   children: List<Widget>.generate(10, (index) {
                                     return Center(
@@ -269,15 +270,32 @@ class _AddPostPageState extends State<AddPostPage> {
                   },
                 ),
                 VerticalGap.xl,
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        padding: EdgeInsetsDirectional.symmetric(
-                            horizontal: context.width / 3)),
-                    onPressed: () {
-                      //submit the add post data to the db
-                    },
-                    child: const Text("Publish")),
+                BlocListener<AddPostCubit, AddPostState>(
+                  listener: (context, state) {
+                    if (state is AddPostSuccess) {
+                      print("Success bho muji");
+                    }
+                  },
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          padding: EdgeInsetsDirectional.symmetric(
+                              horizontal: context.width / 3)),
+                      onPressed: () {
+                        //submit the add post data to the db
+
+                        final file =
+                            BlocProvider.of<ImagePickerWidget>(context).state;
+
+                        if (file == null) {
+                          print("Image path is null");
+                        } else {
+                          BlocProvider.of<AddPostCubit>(context).addPost(
+                              file, FirebaseAuth.instance.currentUser!.uid);
+                        }
+                      },
+                      child: const Text("Publish")),
+                ),
               ],
             ),
           )

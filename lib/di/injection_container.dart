@@ -7,6 +7,10 @@ import 'package:hiking_nepal/features/auth/data/repo/user_repository_impl.dart';
 import 'package:hiking_nepal/features/auth/domain/repository/user_remote_data_source.dart';
 import 'package:hiking_nepal/features/auth/domain/repository/user_repository.dart';
 import 'package:hiking_nepal/features/auth/presentaion/cubit/auth_cubit.dart';
+import 'package:hiking_nepal/features/post/data/remote_data_source/post_remote_data_source_impl.dart';
+import 'package:hiking_nepal/features/post/data/repository/post_repository_impl.dart';
+import 'package:hiking_nepal/features/post/domain/repository/post_remote_data_source.dart';
+import 'package:hiking_nepal/features/post/domain/repository/post_repository.dart';
 import 'package:image_picker/image_picker.dart';
 
 //get it instance
@@ -28,6 +32,10 @@ Future<void> intializeDependences() async {
       UserRemoteDataSourceImpl(auth: getIt()));
   getIt.registerSingleton<UserRepository>(
       UserRepositoryImpl(userRemoteDataSource: getIt()));
+  getIt.registerSingleton<PostRemoteDataSource>(
+      PostRemoteDataSourceImpl(firebaseStorage: getIt()));
+  getIt.registerSingleton<PostRepository>(
+      PostRepositoryImpl(postRemoteDataSource: getIt()));
 
   //Image picker instance
   getIt.registerSingleton<ImagePicker>(ImagePicker());

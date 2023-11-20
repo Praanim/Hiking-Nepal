@@ -17,7 +17,7 @@ final class AddPostSuccess extends AddPostState {
 }
 
 final class AddPostFailure extends AddPostState {
-  ///the reason of the failure of the state
+  ///The reason of the failure of the state
   final String message;
 
   const AddPostFailure({required this.message}) : super(postModel: null);

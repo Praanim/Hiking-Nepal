@@ -1,4 +1,7 @@
 class PostEntity {
+  ///Unique id of the post
+  final String? uid;
+
   ///name of the place
   final String? name;
 
@@ -23,14 +26,19 @@ class PostEntity {
   ///image of the destination
   final String? image;
 
+  ///Author of the post (This wil be firebase uid of the user)
+  final String? author;
+
   ///constructor
   const PostEntity(
-      {this.name,
+      {this.uid,
+      this.name,
       this.description,
       this.cost,
       this.category,
       this.date,
       this.location,
       this.time,
-      this.image});
+      this.image,
+      this.author});
 }
